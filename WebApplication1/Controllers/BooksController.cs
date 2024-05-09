@@ -131,7 +131,7 @@ namespace e_shop.Controllers
                 YearPublished = book.YearPublished,
                 NumPages = book.NumPages,
                 Publisher = book.Publisher,
-                FrontPageURL = book.FrontPage,
+                FrontPage = book.FrontPage,
                 DownloadUrl = book.DownloadUrl,
                 Authors = authors,
                 Genres = genres,
@@ -142,7 +142,7 @@ namespace e_shop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditBook(int id, EditBooksViewModel bookVM)
+        public async Task<IActionResult> Edit(int id, EditBooksViewModel bookVM)
         {
             if (!ModelState.IsValid)
             {
@@ -163,7 +163,7 @@ namespace e_shop.Controllers
                     YearPublished = bookVM.YearPublished,
                     NumPages = bookVM.NumPages,
                     Publisher = bookVM.Publisher,
-                    FrontPage = bookVM.FrontPageURL,
+                    FrontPage = bookVM.FrontPage,
                     DownloadUrl = bookVM.DownloadUrl,
                     AuthorId = bookVM.AuthorId,
                 };
@@ -186,7 +186,7 @@ namespace e_shop.Controllers
                     _bookGenresService.Add(bookGenre);
                 }
 
-                return Redirect("/Book/Details/" + id);
+                return Redirect("/Books/Details/" + id);
             }
             else
             {
