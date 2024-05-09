@@ -98,22 +98,32 @@ namespace e_shop.Controllers
             await _service.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+        //Get: Books/Details/1
+        public async Task<IActionResult> Details(int id)
+        {
+            var actorDetails = await _service.GetByIdAsync(id);
+            if (actorDetails == null)
+            {
+                return View("NotFound");
+            }
+            return View(actorDetails);
+        }
 
-        public async Task<IActionResult> EditBook(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             Book book = await _service.GetByIdAsyncNoTracking(id);
             if (book == null)
             {
-                return View("Error");
+                return View("NotFound");
             }
             IEnumerable<Author> authors = await _service.GetAllAuthors();
             IEnumerable<Genre> genres = await _service.GetAllGenres();
             List<int> genreIds = new List<int>();
-            foreach (var genre in book.BookGenres)
+            foreach (var genre in book.Books_Genres)
             {
                 genreIds.Add(genre.GenreId);
             }
-            EditBookViewModel bookVM = new EditBookViewModel()
+            EditBooksViewModel bookVM = new EditBooksViewModel()
             {
                 Id = book.Id,
                 Title = book.Title,
@@ -131,18 +141,67 @@ namespace e_shop.Controllers
             return View(bookVM);
         }
 
-
-        //Get: Books/Details/1
-        public async Task<IActionResult> Details(int id)
+        [HttpPost]
+        public async Task<IActionResult> EditBook(int id, EditBooksViewModel bookVM)
         {
-            var actorDetails = await _service.GetByIdAsync(id);
-            if(actorDetails==null)
+            if (!ModelState.IsValid)
             {
-                return View("NotFound");  
+                IEnumerable<Author> authors = await _service.GetAllAuthors();
+                bookVM.Authors = authors;
+                IEnumerable<Genre> genres = await _service.GetAllGenres();
+                bookVM.Genres = genres;
+                ModelState.AddModelError("", "Failed to edit book");
+                return View(bookVM);
             }
-            return View(actorDetails);
-        }
+            if (bookVM != null)
+            {
+                Book newBook = new Book()
+                {
+                    Id = bookVM.Id,
+                    Title = bookVM.Title,
+                    Description = bookVM.Description,
+                    YearPublished = bookVM.YearPublished,
+                    NumPages = bookVM.NumPages,
+                    Publisher = bookVM.Publisher,
+                    FrontPage = bookVM.FrontPageURL,
+                    DownloadUrl = bookVM.DownloadUrl,
+                    AuthorId = bookVM.AuthorId,
+                };
+                _service.UpdateAsync(id,newBook);
+                IEnumerable<BookGenre> bookGenres = await _bookGenresService.GetAll();
+                foreach (var bg in bookGenres)
+                {
+                    if (bg.BookId == id)
+                    {
+                        _bookGenresService.Delete(bg);
+                    }
+                }
+                foreach (var genreId in bookVM.GenreIds)
+                {
+                    BookGenre bookGenre = new BookGenre()
+                    {
+                        BookId = bookVM.Id,
+                        GenreId = genreId,
+                    };
+                    _bookGenresService.Add(bookGenre);
+                }
 
+                return Redirect("/Book/Details/" + id);
+            }
+            else
+            {
+                IEnumerable<Author> authors = await _service.GetAllAuthors();
+                bookVM.Authors = authors;
+                IEnumerable<Genre> genres = await _service.GetAllGenres();
+                bookVM.Genres = genres;
+                return View(bookVM);
+            }
+        }
     }
+    
 }
+
+
+
+
 

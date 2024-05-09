@@ -35,13 +35,27 @@ namespace e_shop.Data.Services
             return result;
         }
 
-        public Book Update(int id, Book book)
+        public async Task<Book> UpdateAsync(int id, Book book)
         {
-            throw new NotImplementedException();
+            _context.Update(book);
+            await _context.SaveChangesAsync();
+            return book;
         }
         public async Task<Book> GetLastBook()
         {
             return await _context.Books.FirstOrDefaultAsync(i => i.Id == _context.Books.Max(i => i.Id));
+        }
+        public async Task<Book> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Books.Include(a => a.Author).Include(r => r.Reviews).Include(bg => bg.Books_Genres).ThenInclude(g => g.Genre).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+        }
+        public async Task<IEnumerable<Author>> GetAllAuthors()
+        {
+            return await _context.Authors.ToListAsync();
+        }
+        public async Task<IEnumerable<Genre>> GetAllGenres()
+        {
+            return await _context.Genres.ToListAsync();
         }
 
     }

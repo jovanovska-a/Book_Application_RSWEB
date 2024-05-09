@@ -15,10 +15,25 @@ namespace WebApplication1.Data.Services
             _context.Books_Genres.Add(bookGenre);
             _context.SaveChanges();
         }
-
-        public Task<BookGenre> UpdateAsync(BookGenre bookGenre)
+        public async Task<IEnumerable<BookGenre>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Books_Genres.ToListAsync();
+        }
+        public async Task<BookGenre> UpdateAsync(BookGenre bookGenre)
+        {
+            _context.Update(bookGenre);
+            await _context.SaveChangesAsync();
+            return bookGenre;
+        }
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+        public bool Delete(BookGenre bookGenre)
+        {
+            _context.Books_Genres.Remove(bookGenre);
+            return Save();
         }
     }
 }

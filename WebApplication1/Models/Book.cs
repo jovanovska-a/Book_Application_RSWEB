@@ -38,7 +38,7 @@ namespace e_shop.Models
         public List<UserBook> ? User_Books { get; set; }
         public List<BookGenre> ? Books_Genres { get; set; }
         //Author
-        public int ? AuthorId { get; set; }
+        public int AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         [Required(ErrorMessage = "Author is required")]
         public Author ? Author { get; set; }
