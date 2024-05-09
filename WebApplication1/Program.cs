@@ -1,6 +1,7 @@
 using e_shop.Data;
 using e_shop.Data.Services;
 using System;
+using WebApplication1.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddScoped<IBooksService, BooksService>();
 builder.Services.AddScoped<IAuthorsService, AuthorsService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddScoped<IGenresService, GenresService>();
+builder.Services.AddScoped<IBooksGenresService, BooksGenresService>();
 
 var app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")

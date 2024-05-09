@@ -16,9 +16,11 @@ namespace e_shop.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Books.FirstOrDefaultAsync(n => n.Id == id);
+            _context.Books.Remove(result);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Book>> GetAllAsync()
@@ -36,6 +38,11 @@ namespace e_shop.Data.Services
         public Book Update(int id, Book book)
         {
             throw new NotImplementedException();
-        } 
+        }
+        public async Task<Book> GetLastBook()
+        {
+            return await _context.Books.FirstOrDefaultAsync(i => i.Id == _context.Books.Max(i => i.Id));
+        }
+
     }
 }

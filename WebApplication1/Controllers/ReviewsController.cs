@@ -57,7 +57,7 @@ namespace e_shop.Controllers
                 return View(review);
             }
             await _service.UpdateAsync(review);
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Reviews/Index/" +review.BookId);
         }
         public async Task<IActionResult> Delete(int id)
         {
@@ -65,13 +65,14 @@ namespace e_shop.Controllers
             if (reviewDetails == null) return View("NotFound");
             return View(reviewDetails);
         }
+        [HttpPost,ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reviewDetails = await _service.GetByIdAsync(id);
             if (reviewDetails == null) return View("NotFound");
 
             await _service.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return Redirect("/Reviews/Index/" + reviewDetails.BookId);
         }
     }
 }

@@ -8,6 +8,8 @@ namespace e_shop.Data.Services
         Task<Book> GetByIdAsync(int id);
         Task AddAsync(Book book);
         Book Update(int id,Book book);
-        void Delete(int id);
+        Task DeleteAsync(int id);
+        Task<Book> GetLastBook();
+
     }
 }

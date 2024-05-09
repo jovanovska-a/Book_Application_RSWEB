@@ -1,19 +1,16 @@
 ﻿@model Review
 @{
-    ViewData["Title"] = "Update Review";
+    ViewData["Title"] = "Delete Review";
 }
 <div class="row text">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Update Review</h1>
+            <h1>Delete Review</h1>
         </p>
     </div>
     <div class="row">
         <div class="col-md-8 offset-2">
-            <form asp-action="Edit">
-                <div>
-                    <input type="hidden" asp-for="BookId" value="@Model.BookId"/>
-                </div>
+            <form asp-action="Delete" method="post">
                 <div asp-asp-validation-summary="ModeOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="AppUser" class="control-label"></label>
@@ -31,11 +28,10 @@
                     <span asp-validation-for="Rating" class="text-danger"></span>
                 </div>
                 <div class="form-gorup">
-                    <input type="submit" value="Edit" class="btn btn-outline-success float-right" />
+                    <input type="submit" value="Delete" class="btn btn-outline-success float-right" />
                     <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
