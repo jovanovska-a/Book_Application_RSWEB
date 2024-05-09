@@ -1,0 +1,28 @@
+﻿@model Genre
+@{
+    ViewData["Title"] = "Delete Genre";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Delete confirmation for @Model.GenreName</h1>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-2">
+                <div asp-asp-validation-summary="ModeOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="GenreName" class="control-label"></label>
+                    <input asp-for="GenreName" class="form-control" />
+                    <span asp-validation-for="GenreName" class="text-danger"></span>
+                </div>
+            <div class="form-gorup">
+                <form asp-action="DeleteConfirmed">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <input type="submit" value="Confirm" class="btn btn-danger float-right" />
+                </form>
+                <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+            </div>
+        </div>
+    </div>
+</div>

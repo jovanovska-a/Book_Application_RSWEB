@@ -1,0 +1,97 @@
+﻿@model Book
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Details for @Model.Title</h1>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-2">
+                <div class="form-group text-center">
+                    <img id="FrontPageId" style="max-width: 100px"/>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FrontPage" class="control-label"></label>
+                    <input asp-for="FrontPage" class="form-control" readonly/>
+                    <span asp-validation-for="FrontPage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" readonly />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Author</label>
+                <input class="form-control" asp-for="Author.FirstName" asp-for="Author.LastName" readonly />
+                <span class="text-danger" asp-validation-for="Author.FirstName" asp-validation-for="Author.LastName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="YearPublished" class="control-label"></label>
+                    <input asp-for="YearPublished" class="form-control" readonly />
+                    <span asp-validation-for="YearPublished" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <label asp-for="YearPublished" class="control-label"></label>
+                <input asp-for="YearPublished" class="form-control" readonly />
+                <span asp-validation-for="YearPublished" class="text-danger"></span>
+            </div>
+            <div class="align-middle">
+                @foreach (var genre in Model.Books_Genres)
+                {
+                    <span>@genre.Genre.GenreName</span>
+
+                    <br />
+                }
+            </div>
+            @{
+                int suma = 0;
+                int br = 0;
+                int rating = 0;
+                @foreach (var r in Model.Reviews)
+                {
+                    suma += r.Rating.GetValueOrDefault();
+                    br++;
+                }
+                if (br != 0) rating = suma / br;
+            }
+            <div class="align-middle">
+                @rating
+            </div>
+                <div class="form-group">
+                    <label asp-for="NumPages" class="control-label"></label>
+                <input asp-for="NumPages" class="form-control" readonly/>
+                    <span asp-validation-for="NumPages" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" readonly />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Publisher" class="control-label"></label>
+                <input asp-for="Publisher" class="form-control" readonly />
+                    <span asp-validation-for="Publisher" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DownloadUrl" class="control-label"></label>
+                <input asp-for="DownloadUrl" class="form-control" readonly />
+                    <span asp-validation-for="DownloadUrl" class="text-danger"></span>
+                </div>
+                <div class="form-gorup">
+                    <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+                    <a class="btn btn-outline-secondary" asp-controller="Reviews" asp-action="Index" asp-route-id="@Model.Id">Reviews</a>
+                </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById("FrontPageId");
+            output.src = $("#FrontPage").val();
+        })
+    </script>
+}

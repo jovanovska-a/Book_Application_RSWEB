@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "List of Books";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.FrontPage)</th>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Author)</th>
+                    <th>@Html.DisplayNameFor(model => model.YearPublished)</th>
+                    <th>Genres</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            <img class="rounded-circle" src="@item.FrontPage" alt="@item.Title" style="max-width: 100px"/>
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.Author.FirstName)
+                            @Html.DisplayFor(modelItem => item.Author.LastName)
+                        </td>
+                        <td class="align-middle">
+                            @Html.DisplayFor(modelItem => item.YearPublished)
+                        </td>
+                        <td class="align-middle">
+                            @foreach (var genre in item.Books_Genres)
+                            {
+                                <span>@genre.Genre.GenreName</span><br />
+                            }
+                        </td>
+                        @{
+                            int suma=0;
+                            int br = 0;
+                            int rating = 0;
+                            @foreach(var r in item.Reviews)
+                            {
+                                suma += r.Rating.GetValueOrDefault();
+                                br++;
+                            }
+                            if (br != 0) rating = suma/br;
+                        }
+                        <td class="align-middle">
+                            @rating
+                        </td>
+                        <td class="align-middle">
+                            <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square">Edit</i></a>
+                            <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye">Details</i></a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash">Delete</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
+     <a asp-controller="Books" asp-action="Create" class="btn btn-success">
+        <i class="bg-info bi-plus-circle">Add New</i>
+     </a>
+</div>
