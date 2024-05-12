@@ -8,8 +8,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-                    <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                    <th>Author</th>
                     <th>@Html.DisplayNameFor(model => model.BirthDate)</th>
                     <th>@Html.DisplayNameFor(model => model.Nationality)</th>
                     <th>@Html.DisplayNameFor(model => model.Gender)</th>
@@ -21,10 +20,10 @@
                 {
                     <tr>
                         <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.LastName)
+                            <a style="text-decoration: none"  asp-controller="Books" asp-action="SearchByAuthorId" asp-route-id="@item.Id">
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </a>
                         </td>
                         <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.BirthDate)

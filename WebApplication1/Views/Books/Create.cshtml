@@ -11,14 +11,14 @@
     </div>
     <div class="row">
         <div class="col-md-8 offset-2">
-            <form asp-action="Create">
+            <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-asp-validation-summary="ModeOnly" class="text-danger"></div>
                 <div class="form-group text-center">
                     <img id="FrontPageId" style="max-width: 100px" />
                 </div>
                 <div class="form-group">
                     <label asp-for="FrontPage" class="control-label"></label>
-                    <input asp-for="FrontPage" class="form-control" />
+                    <input asp-for="FrontPage" type="file" class="form-control" />
                     <span asp-validation-for="FrontPage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -26,7 +26,6 @@
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                <div>Avtor</div>
                 <div class="form-group">
                     <label asp-for="YearPublished" class="control-label"></label>
                     <input asp-for="YearPublished" class="form-control" />

@@ -2,37 +2,11 @@
 @{
     ViewData["Title"] = "List of Books";
 }
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="p-4">Books</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString1" class="form-control me-1" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-dark" type="submit">Search by Title</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString2" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-dark" type="submit">Search by Genre</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString3" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-dark" type="submit">Search by Author</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <a asp-action="Index" class="text-dark">Back to Full List</a>
-        </div>
-    </div>
-</div>
-
+@if(Model.Count()==0){
+    <h1>This author doesn't have books yet!'</h1>
+    <a asp-controller="Authors" asp-action="Index" type="button" action="btn btn-primary">Go Back</a>
+    
+}
 <div class="row">
     <div class="col-md-8 offset-md-2">
         <table class="table">
@@ -48,11 +22,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var item in Model)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td class="align-middle">
-                            <img class="rounded-circle" src="@item.FrontPage" alt="@item.Title" style="max-width: 100px"/>
+                            <img class="rounded-circle" src="@item.FrontPage" alt="@item.Title" style="max-width: 100px" />
                         </td>
                         <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.Title)
@@ -73,15 +47,15 @@
 
                         </td>
                         @{
-                            int suma=0;
+                            int suma = 0;
                             int br = 0;
                             int rating = 0;
-                            @foreach(var r in item.Reviews)
+                            @foreach (var r in item.Reviews)
                             {
                                 suma += r.Rating.GetValueOrDefault();
                                 br++;
                             }
-                            if (br != 0) rating = suma/br;
+                            if (br != 0) rating = suma / br;
                         }
                         <td class="align-middle">
                             @rating
@@ -98,7 +72,7 @@
     </div>
 </div>
 <div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
-     <a asp-controller="Books" asp-action="Create" class="btn btn-success">
+    <a asp-controller="Books" asp-action="Create" class="btn btn-success">
         <i class="bg-info bi-plus-circle">Add New</i>
-     </a>
+    </a>
 </div>

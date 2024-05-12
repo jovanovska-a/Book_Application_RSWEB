@@ -17,7 +17,7 @@ namespace WebApplication1.Data.Services
         }
         public async Task<IEnumerable<BookGenre>> GetAll()
         {
-            return await _context.Books_Genres.ToListAsync();
+            return await _context.Books_Genres.AsNoTracking().ToListAsync();
         }
         public async Task<BookGenre> UpdateAsync(BookGenre bookGenre)
         {

@@ -2,6 +2,7 @@ using e_shop.Data;
 using e_shop.Data.Services;
 using System;
 using WebApplication1.Data.Services;
+using WebApplication1.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddScoped<IAuthorsService, AuthorsService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddScoped<IGenresService, GenresService>();
 builder.Services.AddScoped<IBooksGenresService, BooksGenresService>();
+builder.Services.Configure<Cloudinary_Settings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 var app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")

@@ -22,9 +22,23 @@ namespace e_shop.Controllers
             _genresService = genresService;
             _bookGenresService = bookGenresService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString1, string searchString2, string searchString3)
         {
             var allBooks = await _service.GetAllAsync();
+            if(!String.IsNullOrEmpty(searchString1))
+            {
+                allBooks=allBooks.Where(n => n.Title.Contains(searchString1)).ToList();
+            }
+            if (!String.IsNullOrEmpty(searchString2))
+            {
+                allBooks = allBooks.Where(n => n.Books_Genres.Any(
+                        bg => bg.Genre.GenreName.Contains(searchString2))
+                );
+            }
+            if (!String.IsNullOrEmpty(searchString3))
+            {
+                allBooks = allBooks.Where(n => n.Author.FirstName.Contains(searchString3) || n.Author.LastName.Contains(searchString3)).ToList();
+            }
             return View(allBooks);
         }
         //Get: Books/Create
@@ -62,7 +76,7 @@ namespace e_shop.Controllers
                 AuthorId = bookVM.AuthorId,
                 DownloadUrl = bookVM.DownloadUrl,
             };
-            _service.AddAsync(newBook);
+            _service.Add(newBook);
 
             Book newLastBook = await _service.GetLastBook();
             foreach (var genreId in bookVM.GenreIds)
@@ -76,6 +90,11 @@ namespace e_shop.Controllers
             }
             return RedirectToAction("Index");
 
+        }
+        public async Task<IActionResult> SearchByAuthorId(int id)
+        {
+            IEnumerable<Book> books = await _service.GetBooksByAuthorId(id);
+            return View(books);
         }
         //Get: Book/Delete
         public async Task<IActionResult> Delete(int id)
@@ -167,7 +186,7 @@ namespace e_shop.Controllers
                     DownloadUrl = bookVM.DownloadUrl,
                     AuthorId = bookVM.AuthorId,
                 };
-                _service.UpdateAsync(id,newBook);
+                _service.Update(id,newBook);
                 IEnumerable<BookGenre> bookGenres = await _bookGenresService.GetAll();
                 foreach (var bg in bookGenres)
                 {
