@@ -14,6 +14,7 @@ builder.Services.AddScoped<IAuthorsService, AuthorsService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
 builder.Services.AddScoped<IGenresService, GenresService>();
 builder.Services.AddScoped<IBooksGenresService, BooksGenresService>();
+builder.Services.AddScoped<IPhotosService, PhotosService>();
 builder.Services.Configure<Cloudinary_Settings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 var app = builder.Build();

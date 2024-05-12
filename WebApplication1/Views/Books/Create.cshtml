@@ -35,7 +35,7 @@
                     <label asp-for="AuthorId">Chose author</label>
                     <select asp-for="AuthorId" class="form-control">
                         <option selected="selected">--Select--</option>
-                        @foreach (var author in Model.Authors)
+                        @foreach (var author in Model.Author)
                         {
                             <option value="@author.Id">@author.FirstName @author.LastName</option>
                         }

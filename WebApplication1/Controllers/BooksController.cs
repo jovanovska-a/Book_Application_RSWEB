@@ -14,13 +14,15 @@ namespace e_shop.Controllers
         private readonly IAuthorsService _authorsService;
         private readonly IGenresService _genresService;
         private readonly IBooksGenresService _bookGenresService;
+        private readonly IPhotosService _photoService;
 
-        public BooksController(IBooksService service,IAuthorsService authorsService,IGenresService genresService,IBooksGenresService bookGenresService)
+        public BooksController(IBooksService service,IAuthorsService authorsService,IGenresService genresService,IBooksGenresService bookGenresService,IPhotosService photoService)
         {
             _service = service;
             _authorsService = authorsService;
             _genresService = genresService;
             _bookGenresService = bookGenresService;
+            _photoService = photoService;
         }
         public async Task<IActionResult> Index(string searchString1, string searchString2, string searchString3)
         {
@@ -48,7 +50,7 @@ namespace e_shop.Controllers
             IEnumerable<Genre> genres = await _genresService.GetAll();
             CreateBooksViewModel newVM = new CreateBooksViewModel()
             {
-                Authors = authors,
+                Author = authors,
                 Genres = genres,
             };
             return View(newVM);
@@ -58,13 +60,14 @@ namespace e_shop.Controllers
         {
             if(!ModelState.IsValid)
             {
-                IEnumerable<Author> authors = await _authorsService.GetAll();
-                IEnumerable<Genre> genres = await _genresService.GetAll();
-                bookVM.Authors = authors;
+                IEnumerable<Author> author = await _service.GetAllAuthors();
+                IEnumerable<Genre> genres = await _service.GetAllGenres();
+                bookVM.Author = author;
                 bookVM.Genres = genres;
                 ModelState.AddModelError("", "Failed to add book");
                 return View(bookVM);
             }
+            var result = await _photoService.AddPhotoAsync(bookVM.FrontPage);
             var newBook = new Book()
             {
                 Title = bookVM.Title,
@@ -72,7 +75,7 @@ namespace e_shop.Controllers
                 NumPages = bookVM.NumPages,
                 Description = bookVM.Description,
                 Publisher = bookVM.Publisher,
-                FrontPage = bookVM.FrontPage,
+                FrontPage = result.Url.ToString(),
                 AuthorId = bookVM.AuthorId,
                 DownloadUrl = bookVM.DownloadUrl,
             };

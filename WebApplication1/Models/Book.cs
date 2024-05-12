@@ -9,7 +9,6 @@ namespace e_shop.Models
         [Key]
         public int Id { get; set; }
         
-        [Required(ErrorMessage = "Title is required")]
         [StringLength(100, MinimumLength = 1, ErrorMessage = "Invalid Length")]
         [Display(Name ="Title")]
         public string Title { get; set; }

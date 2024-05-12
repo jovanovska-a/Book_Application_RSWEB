@@ -6,30 +6,17 @@ namespace WebApplication1.viewModel
 {
     public class CreateBooksViewModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Title is required")]
-        [StringLength(100, MinimumLength = 1, ErrorMessage = "Invalid Length")]
-        [Display(Name = "Title")]
         public string Title { get; set; }
-
-        [Display(Name = "Publication year")]
-        public int? YearPublished { get; set; }
-
-        [Display(Name = "Number of Pages")]
-        public int? NumPages { get; set; }
-
-        [Display(Name = "Description")]
-        public string? Description { get; set; }
-
-        [Display(Name = "Publisher")]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "Invalid Length")]
-        public string? Publisher { get; set; }
-
-        [Display(Name = "Front Page")]
-        public string? FrontPage { get; set; }
-
-        [Display(Name = "Download here")]
-        public string? DownloadUrl { get; set; }
-        public IEnumerable<Author>? Authors { get; set; }
+        public int ? YearPublished { get; set; }
+        public int ? NumPages { get; set; }
+        public string ? Description { get; set; }
+        public string ? Publisher { get; set; }
+        public IFormFile FrontPage { get; set; }
+        public string ? DownloadUrl { get; set; }
+        public IEnumerable<Author> ? Author { get; set; }
         public int AuthorId { get; set; }
         public IEnumerable<Genre>? Genres { get; set; }
         public IEnumerable<int> GenreIds { get; set; }
