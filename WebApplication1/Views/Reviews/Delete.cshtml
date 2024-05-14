@@ -3,9 +3,9 @@
     ViewData["Title"] = "Delete Review";
 }
 <div class="row text">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-8 offset-2" style="margin-top: 30px; color: darkcyan;">
         <p>
-            <h1>Delete Review</h1>
+            <h4>Delete this Review</h4>
         </p>
     </div>
     <div class="row">
@@ -28,8 +28,8 @@
                     <span asp-validation-for="Rating" class="text-danger"></span>
                 </div>
                 <div class="form-gorup">
-                    <input type="submit" value="Delete" class="btn btn-outline-success float-right" />
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    <input type="hidden" asp-for="@Model.Id"/>
+                    <input style="margin-left: 90%; margin-top: 2%; font-size: 13px;" type="submit" value="Confirm" class="btn btn-danger float-right" />
                 </div>
             </form>
         </div>

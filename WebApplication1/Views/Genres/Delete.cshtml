@@ -3,26 +3,25 @@
     ViewData["Title"] = "Delete Genre";
 }
 <div class="row text">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-8 offset-2" style="margin-top: 30px; color: darkcyan;">
         <p>
-            <h1>Delete confirmation for @Model.GenreName</h1>
+            <h4>Delete this Genre</h4>
         </p>
     </div>
     <div class="row">
         <div class="col-md-8 offset-2">
                 <div asp-asp-validation-summary="ModeOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="GenreName" class="control-label"></label>
+                <label asp-for="GenreName" class="control-label" style="font-size: 17px; margin-bottom: 5px; padding-left: 5px;"></label>
                     <input asp-for="GenreName" class="form-control" />
                     <span asp-validation-for="GenreName" class="text-danger"></span>
                 </div>
-            <div class="form-gorup">
-                <form asp-action="DeleteConfirmed">
-                    <input type="hidden" asp-for="@Model.Id" />
-                    <input type="submit" value="Confirm" class="btn btn-danger float-right" />
-                </form>
-                <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
-            </div>
+                <div class="form-gorup">
+                    <form asp-action="DeleteConfirmed">
+                        <input type="hidden" asp-for="@Model.Id" />
+                        <input style="margin-left: 90%; margin-top: 2%; font-size: 13px;" type="submit" value="Confirm" class="btn btn-danger float-right" />
+                    </form>
+                </div>
         </div>
     </div>
 </div>

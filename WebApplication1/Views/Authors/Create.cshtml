@@ -3,9 +3,9 @@
     ViewData["Title"] = "Add a new Author";
 }
 <div class="row text">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-8 offset-2" style="margin-top: 30px; color: darkcyan;">
         <p>
-            <h1>Add a New Author</h1>
+            <h4>Add a New Author</h4>
         </p>
     </div>
     <div class="row">
@@ -38,8 +38,7 @@
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
                 <div class="form-gorup">
-                    <input type="submit" value="Create" class="btn btn-outline-success float-right" />
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    <button type="submit" class="btn btn-success float-right" style="margin-left: 88%; margin-top: 2%; font-size: 13px;" asp-action="Create"><i class="bi bi-plus-square"></i>  Create</i></button>
                 </div>
             </form>
             

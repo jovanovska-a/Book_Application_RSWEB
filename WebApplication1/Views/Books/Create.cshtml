@@ -3,37 +3,34 @@
 @{
     ViewData["Title"] = "Add a new Book";
 }
-<div class="row text">
+<div class="row text" style="background-color: beige;">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Add a New Book</h1>
+            <h3 style="color: darkcyan; margin-top: 30px;">Add a New Book</h3>
         </p>
     </div>
     <div class="row">
         <div class="col-md-8 offset-2">
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form asp-action="Create" enctype="multipart/form-data" method="post">
                 <div asp-asp-validation-summary="ModeOnly" class="text-danger"></div>
-                <div class="form-group text-center">
-                    <img id="FrontPageId" style="max-width: 100px" />
-                </div>
                 <div class="form-group">
                     <label asp-for="FrontPage" class="control-label"></label>
-                    <input asp-for="FrontPage" type="file" class="form-control" />
+                    <input asp-for="FrontPage" type="file" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="FrontPage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control" />
+                    <input asp-for="Title" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="YearPublished" class="control-label"></label>
-                    <input asp-for="YearPublished" class="form-control" />
+                    <input asp-for="YearPublished" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="YearPublished" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="AuthorId">Chose author</label>
-                    <select asp-for="AuthorId" class="form-control">
+                    <select asp-for="AuthorId" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;">
                         <option selected="selected">--Select--</option>
                         @foreach (var author in Model.Author)
                         {
@@ -44,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="GenreIds">Genres:</label>
-                    <select asp-for="GenreIds" class="form-control">
+                    <select asp-for="GenreIds" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;">
                         @foreach (var genre in Model.Genres)
                         {
                             <option value="@genre.Id">@genre.GenreName</option>
@@ -54,27 +51,26 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="NumPages" class="control-label"></label>
-                    <input asp-for="NumPages" class="form-control" />
+                    <input asp-for="NumPages" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="NumPages" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
+                    <input asp-for="Description" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Publisher" class="control-label"></label>
-                    <input asp-for="Publisher" class="form-control" />
+                    <input asp-for="Publisher" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="Publisher" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DownloadUrl" class="control-label"></label>
-                    <input asp-for="DownloadUrl" class="form-control" />
+                    <input asp-for="DownloadUrl" class="form-control" style="font-size: 15px; background-color: azure; color: darkslategray;" />
                     <span asp-validation-for="DownloadUrl" class="text-danger"></span>
                 </div>
-                <div class="form-gorup">
-                    <input type="submit" value="Create" class="btn btn-outline-success float-right" />
-                    <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                <div class="form-gorup" style="margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-success float-right" style="margin-left: 88%; margin-top: 2%; font-size: 13px;" asp-action="Create"><i class="bi bi-plus-square"></i>  Create</i></button>
                 </div>
             </form>
         </div>

@@ -29,17 +29,18 @@ namespace e_shop.Controllers
             var allBooks = await _service.GetAllAsync();
             if(!String.IsNullOrEmpty(searchString1))
             {
-                allBooks=allBooks.Where(n => n.Title.Contains(searchString1)).ToList();
+                
+                allBooks = allBooks.Where(n => n.Title.Contains(searchString1, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             if (!String.IsNullOrEmpty(searchString2))
             {
                 allBooks = allBooks.Where(n => n.Books_Genres.Any(
-                        bg => bg.Genre.GenreName.Contains(searchString2))
+                        bg => bg.Genre.GenreName.Contains(searchString2, StringComparison.OrdinalIgnoreCase))
                 );
             }
             if (!String.IsNullOrEmpty(searchString3))
             {
-                allBooks = allBooks.Where(n => n.Author.FirstName.Contains(searchString3) || n.Author.LastName.Contains(searchString3)).ToList();
+                allBooks = allBooks.Where(n => n.Author.FirstName.Contains(searchString3, StringComparison.OrdinalIgnoreCase) || n.Author.LastName.Contains(searchString3, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             return View(allBooks);
         }

@@ -16,10 +16,13 @@ namespace WebApplication1.viewModel
         public string ? Publisher { get; set; }
         public IFormFile FrontPage { get; set; }
         public string ? DownloadUrl { get; set; }
-        public IEnumerable<Author> ? Author { get; set; }
+        //Relations
+        [Required(ErrorMessage = "Author is required")]
         public int AuthorId { get; set; }
-        public IEnumerable<Genre>? Genres { get; set; }
+        public IEnumerable<Author> ? Author { get; set; }
         public IEnumerable<int> GenreIds { get; set; }
+        public IEnumerable<Genre>? Genres { get; set; }
+        
     }
 }
 

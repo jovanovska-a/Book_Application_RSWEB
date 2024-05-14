@@ -10,9 +10,9 @@ namespace WebApplication1.viewModel
         public string Title { get; set; }
         public int? YearPublished { get; set; }
         public int? NumPages { get; set; }
-        [Required]
-        public string? Description { get; set; }
-        public string? Publisher { get; set; }
+
+        public string ? Description { get; set; }
+        public string ? Publisher { get; set; }
         //public IFormFile? FrontPage { get; set; }
         public string? FrontPage{ get; set; }
         public string? DownloadUrl { get; set; }

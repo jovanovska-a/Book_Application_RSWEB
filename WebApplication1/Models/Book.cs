@@ -13,7 +13,7 @@ namespace e_shop.Models
         [Display(Name ="Title")]
         public string Title { get; set; }
 
-        [Display(Name = "Publication year")]
+        [Display(Name = "Year")]
         public int ? YearPublished { get; set; }
         
         [Display(Name = "Number of Pages")]
@@ -39,7 +39,6 @@ namespace e_shop.Models
         //Author
         public int AuthorId { get; set; }
         [ForeignKey("AuthorId")]
-        [Required(ErrorMessage = "Author is required")]
         public Author ? Author { get; set; }
     }
     

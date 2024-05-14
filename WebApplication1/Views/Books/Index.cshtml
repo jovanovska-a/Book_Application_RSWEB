@@ -2,103 +2,90 @@
 @{
     ViewData["Title"] = "List of Books";
 }
-<div class="container p-4">
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="p-4">Books</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString1" class="form-control me-1" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-dark" type="submit">Search by Title</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString2" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-dark" type="submit">Search by Genre</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form class="d-flex" asp-action="Index" asp-controller="Books">
-                <input name="searchString3" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-dark" type="submit">Search by Author</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <a asp-action="Index" class="text-dark">Back to Full List</a>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-8 offset-md-2">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.FrontPage)</th>
-                    <th>@Html.DisplayNameFor(model => model.Title)</th>
-                    <th>@Html.DisplayNameFor(model => model.Author)</th>
-                    <th>@Html.DisplayNameFor(model => model.YearPublished)</th>
-                    <th>Genres</th>
-                    <th>Grade</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var item in Model)
-                {
-                    <tr>
-                        <td class="align-middle">
-                            <img class="rounded-circle" src="@item.FrontPage" alt="@item.Title" style="max-width: 100px"/>
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Author.FirstName)
-                            @Html.DisplayFor(modelItem => item.Author.LastName)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.YearPublished)
-                        </td>
-                        <td class="align-middle">
-                            @foreach (var genre in item.Books_Genres)
-                            {
-                                <span>@genre.Genre.GenreName</span>
-                                <br />
-                            }
-
-                        </td>
-                        @{
-                            int suma=0;
-                            int br = 0;
-                            int rating = 0;
-                            @foreach(var r in item.Reviews)
-                            {
-                                suma += r.Rating.GetValueOrDefault();
-                                br++;
-                            }
-                            if (br != 0) rating = suma/br;
-                        }
-                        <td class="align-middle">
-                            @rating
-                        </td>
-                        <td class="align-middle">
-                            <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square">Edit</i></a>
-                            <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye">Details</i></a>
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash">Delete</i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="row" style="background-color: beige;">
+    <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex;">
+            <form class="form-inline my-lg-0" asp-controller="Books" asp-action="Index" style="padding: 10px;">
+                <div style="display: flex;">
+                    <input name="searchString1" type="text" class="form-control" placeholder="Search Book.." style="font-size: 13px; padding-top: 0px; padding-bottom: 0px; background-color: ivory" />
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 13px; padding-top: 0px; margin-top: 3%; padding-bottom: 0px;"></i></button>
+                </div>
+            </form>
+            <form class="form-inline my-lg-0" asp-controller="Books" asp-action="Index" style="padding: 10px;">
+                <div style="display: flex;">
+                    <input name="searchString2" type="text" class="form-control" placeholder="Search by Genre.." style="font-size: 13px; padding-top: 0px; padding-bottom: 0px;  background-color: ivory" />
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 13px; padding-top: 0px; margin-top: 3%; padding-bottom: 0px;"></i></button>
+                </div>
+            </form>
+            <form class="form-inline my-lg-0" style="padding: 10px;" asp-controller="Books" asp-action="Index">
+                <div style="display: flex;">
+                    <input name="searchString3" type="text" class="form-control" placeholder="Search by Author.." style="font-size: 13px; padding-top: 0px; padding-bottom: 0px;  background-color: ivory" />
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 13px; padding-top: 0px; margin-top: 3%; padding-bottom: 0px;"></i></button>
+                </div>
+            </form>
+        </div>
+        <div style="margin-top: 1%; font-size: 13px;">
+            <a asp-controller="Books" asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"> Add New</i>
+            </a>
+        </div>
     </div>
-</div>
-<div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
-     <a asp-controller="Books" asp-action="Create" class="btn btn-success">
-        <i class="bg-info bi-plus-circle">Add New</i>
-     </a>
+    @foreach(var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3" style="margin-top: 20px;">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12" style="background-color: darkcyan;">
+                        <div class="text-white" >
+                            <p class="card-text">
+                                <h6 class="card-title" style="margin: 0; padding-left: 5%; padding-right: 4%; padding-bottom: 2%; padding-top: 2%;">
+                                    <span>@item.Title</span>
+                                    <a class="float-right" asp-action="Edit" asp-route-id="@item.Id" style="color: lightcyan">
+                                        <i class="bi bi-pencil-square">
+                                        </i>
+                                    </a>
+                                </h6>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <img src="@item.FrontPage" width="100%" height="260px;" alt="@item.Title"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body" style="font-size: 15px;">
+                            <p class="card-text"><b>Author: </b>@item.Author.FirstName @item.Author.LastName</p>
+                            <p class="card-text"><b>Year: </b>@item.YearPublished</p>
+                            <p class="card-text"><b>Genres: </b><br>@foreach (var genre in item.Books_Genres)
+                                {
+                                    <span>@genre.Genre.GenreName</span>
+                                    <br />
+                                }
+                            </p>
+                            @{
+                                int suma = 0;
+                                int br = 0;
+                                int rating = 0;
+                                @foreach(var r in item.Reviews)
+                                {
+                                    suma += r.Rating.GetValueOrDefault();
+                                    br++;
+                                }
+                                if (br != 0) rating = suma / br;
+                            }
+                            <p class="card-text"><b>Rating: </b>@rating</p>
+                        </div>
+                    </div>
+                    <div class="col-md-30">
+                        <div class="card-footer" style="padding: 4%; background-color: powderblue;">
+                            <p class="card-text" >
+                                <a class="btn btn-success" style="padding-left: 6px; padding-right: 6px; padding-top: 2px; padding-bottom: 2px; margin-right: 32%; margin-left: 1%; font-size: 15px;" asp-action="Details" asp-route-id="@item.Id">Show Details <i class="bi bi-eye"></i></a>
+                                <a class="btn btn-danger" style="font-size: 15px; padding-left: 6px; padding-right: 6px; padding-top: 2px; padding-bottom: 2px;" asp-action="Delete" asp-route-id="@item.Id">Delete <i class="bi bi-trash"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

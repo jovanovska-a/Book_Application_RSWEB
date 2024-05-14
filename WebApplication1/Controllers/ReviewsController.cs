@@ -4,6 +4,7 @@ using e_shop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using WebApplication1.viewModel;
 
 namespace e_shop.Controllers
 {
@@ -17,7 +18,12 @@ namespace e_shop.Controllers
         public async Task<IActionResult> Index(int id)
         {
             var allReviews = await _service.GetAllById(id);
-            return View(allReviews);
+            ReviewsViewModel newRVM = new ReviewsViewModel()
+            {
+                BookId = id,
+                Reviews = allReviews
+            };
+            return View(newRVM);
         }
         public IActionResult Create()
         {

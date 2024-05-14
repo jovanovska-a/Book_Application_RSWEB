@@ -2,25 +2,25 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div class="row text">
+<div class="row text" style="background-color: beige;">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Details for @Model.Title</h1>
+            <h3 style ="color: darkcyan;">Details for @Model.Title</h3>
         </p>
     </div>
     <div class="row">
-        <div class="col-md-8 offset-2">
+        <div class="col-md-8 offset-2" style="font-size: 14px;">
                 <div class="form-group text-center">
-                    <img id="FrontPageId" style="max-width: 100px"/>
+                    <img id="FrontPageId" style="max-width: 130px"/>
                 </div>
                 <div class="form-group">
                     <label asp-for="FrontPage" class="control-label"></label>
-                    <input asp-for="FrontPage" class="form-control" readonly/>
+                    <input asp-for="FrontPage" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
                     <span asp-validation-for="FrontPage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" readonly />
+                <input asp-for="Title" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -28,14 +28,14 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="YearPublished" class="control-label"></label>
-                    <input asp-for="YearPublished" class="form-control" readonly />
+                <input asp-for="YearPublished" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
                     <span asp-validation-for="YearPublished" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     @foreach (var genre in Model.Books_Genres)
                     {
                         <label asp-for="@genre.Genre.GenreName" class="control-label"></label>
-                        <input asp-for="@genre.Genre.GenreName" class="form-control" readonly />
+                    <input asp-for="@genre.Genre.GenreName" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
                         <span asp-validation-for="@genre.Genre.GenreName" class="text-danger"></span>
                     }
                 </div>
@@ -52,33 +52,34 @@
                 }
                 <div class="form-group">
                     <label asp-for="@rating" class="control-label"></label>
-                <input asp-for="@rating" class="form-control" readonly disabled />
+                <input asp-for="@rating" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
                     <span asp-validation-for="@rating" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="NumPages" class="control-label"></label>
-                <input asp-for="NumPages" class="form-control" readonly disabled />
+                <input asp-for="NumPages" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
                     <span asp-validation-for="NumPages" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" readonly disabled />
+                <input asp-for="Description" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Publisher" class="control-label"></label>
-                <input asp-for="Publisher" class="form-control" readonly disabled />
+                <input asp-for="Publisher" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
                     <span asp-validation-for="Publisher" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DownloadUrl" class="control-label"></label>
-                <input asp-for="DownloadUrl" class="form-control" readonly disabled  />
+                <input asp-for="DownloadUrl" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
                     <span asp-validation-for="DownloadUrl" class="text-danger"></span>
                 </div>
-                <div class="form-gorup">
-                    <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
-                    <a class="btn btn-outline-secondary" asp-controller="Reviews" asp-action="Index" asp-route-id="@Model.Id">Reviews</a>
-                </div>
+            <div class="form-gorup" style=" margin-top: 2%; margin-bottom: 20px;">
+                <a class="btn btn-secondary" style="font-size: 13px;" asp-controller="Reviews" asp-action="Index" asp-route-id="@Model.Id"><i class="bi bi-chat-square-heart"></i> Reviews</a>
+                <a class="btn btn-outline-secondary" style="margin-right: 64%; font-size: 13px;" asp-action="Index">Show All</a>
+                <a class="btn btn-outline-success float-right" style="font-size: 13px;" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil-square"></i>Edit</a>
+            </div>
         </div>
     </div>
 </div>
