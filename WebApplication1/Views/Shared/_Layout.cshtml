@@ -12,29 +12,45 @@
 <body style="background-color: beige;">
     <header style="background-color: darkslategrey; font-size: 17px; padding: 5px;">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Books" asp-action="Index" style="font-size: 20px; color: antiquewhite;">BookStore</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="navbar-nav">
-                            <a style="color: antiquewhite;" class="nav-link" asp-controller="Books" asp-action="Index"><i class="bi bi-book"></i>Books</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a style="color: antiquewhite;"class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarDropdown" role="button" data-toggle="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-gear"></i> Additional
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-controller="Authors" asp-action="Index"><i class="bi bi-feather">Authors</i></a>
-                                <a class="dropdown-item" asp-controller="Genres" asp-action="Index"><i class="bi bi-emoji-laughing">Genres</i></a>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Books" asp-action="Index" style="font-size: 20px; color: antiquewhite;">BookStore</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="navbar-nav">
+                                <a style="color: antiquewhite;" class="nav-link" asp-controller="Books" asp-action="Index"><i class="bi bi-book"></i>Books</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a style="color: antiquewhite;"class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarDropdown" role="button" data-toggle="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Additional
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="Authors" asp-action="Index"><i class="bi bi-feather">Authors</i></a>
+                                    <a class="dropdown-item" asp-controller="Genres" asp-action="Index"><i class="bi bi-emoji-laughing">Genres</i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+                @if(User.Identity.IsAuthenticated)
+                {
+                <div style="display: flex;">
+                    <a class="nav-link" style="color: antiquewhite; text-decoration: none; margin-right: 10px;" asp-action="Register" asp-controller="Dashboard">Dashboard </a>
+                    <form asp-area="" asp-controller="Account" asp-action="Logout">
+                        <button class="btn btn-outline-danger">Logout</button>
+                    </form>
+                </div>
+                }
+                else
+                {
+                    <div style="display: flex;">
+                        <a class="nav-link" style="color: antiquewhite; text-decoration: none; margin-right: 10px;" asp-action="Register" asp-controller="Account">Register </a>
+                        <a class="nav-link" style="color: antiquewhite; text-decoration: none; margin-right: 15px;" asp-action="Login" asp-controller="Account">Login </a>
+                    </div>
+                }
         </nav>
     </header>
     <div class="container-fluid">
