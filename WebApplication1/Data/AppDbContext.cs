@@ -1,10 +1,11 @@
 ﻿using e_shop.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace e_shop.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         protected readonly IConfiguration Configuration;
 
@@ -38,7 +39,6 @@ namespace e_shop.Data
         public DbSet<UserBook> UserBooks { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookGenre> Books_Genres { get; set; }
-
 
     }
 }

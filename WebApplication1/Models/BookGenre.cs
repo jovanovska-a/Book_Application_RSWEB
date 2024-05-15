@@ -5,6 +5,8 @@ namespace e_shop.Models
 {
     public class BookGenre
     {
+        [Key]
+        public int Id { get; set; }
         public int BookId { get; set; }
         public Book Book { get; set; }
         public int GenreId { get; set; } 
