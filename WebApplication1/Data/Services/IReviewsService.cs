@@ -9,6 +9,8 @@ namespace e_shop.Data.Services
         void Add(Review review);
         Task<Review> UpdateAsync(Review review);
         Task DeleteAsync(int id);
+        string GetCurrentUserId();
+        string GetCurrentUserUsername(string id);
     }
 }
 

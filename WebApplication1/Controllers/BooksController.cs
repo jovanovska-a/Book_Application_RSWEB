@@ -1,6 +1,7 @@
 ﻿using e_shop.Data;
 using e_shop.Data.Services;
 using e_shop.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data.Services;
@@ -15,14 +16,17 @@ namespace e_shop.Controllers
         private readonly IGenresService _genresService;
         private readonly IBooksGenresService _bookGenresService;
         private readonly IPhotosService _photoService;
-
-        public BooksController(IBooksService service,IAuthorsService authorsService,IGenresService genresService,IBooksGenresService bookGenresService,IPhotosService photoService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IUserBooksService _userBooksService;
+        public BooksController(IBooksService service,IAuthorsService authorsService,IGenresService genresService,IBooksGenresService bookGenresService,IPhotosService photoService, IWebHostEnvironment webHostEnvironment, IUserBooksService userBooksService)
         {
             _service = service;
             _authorsService = authorsService;
             _genresService = genresService;
             _bookGenresService = bookGenresService;
             _photoService = photoService;
+            _webHostEnvironment = webHostEnvironment;
+            _userBooksService = userBooksService;
         }
         public async Task<IActionResult> Index(string searchString1, string searchString2, string searchString3)
         {
@@ -69,6 +73,11 @@ namespace e_shop.Controllers
                 return View(bookVM);
             }
             var result = await _photoService.AddPhotoAsync(bookVM.FrontPage);
+            if(bookVM.DownloadPdf!=null)
+            {
+                string folder = "BooksPdf/";
+                bookVM.DownloadUrl=await UploadFile(folder,bookVM.DownloadPdf);
+            }
             var newBook = new Book()
             {
                 Title = bookVM.Title,
@@ -124,12 +133,23 @@ namespace e_shop.Controllers
         //Get: Books/Details/1
         public async Task<IActionResult> Details(int id)
         {
-            var actorDetails = await _service.GetByIdAsync(id);
-            if (actorDetails == null)
+            var bookDetails = await _service.GetByIdAsync(id);
+            bool hasBook = false;
+            if (User.Identity.IsAuthenticated)
+            {
+                hasBook = _userBooksService.HasBook(id);
+            }
+            if (bookDetails == null)
             {
                 return View("NotFound");
             }
-            return View(actorDetails);
+            DetailsViewModel detailsVM = new DetailsViewModel()
+            {
+                Book = bookDetails,
+                HasBook = hasBook,
+            };
+            return View(detailsVM);
+
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -154,7 +174,7 @@ namespace e_shop.Controllers
                 YearPublished = book.YearPublished,
                 NumPages = book.NumPages,
                 Publisher = book.Publisher,
-                FrontPage = book.FrontPage,
+                FrontPageUrl = book.FrontPage,
                 DownloadUrl = book.DownloadUrl,
                 Authors = authors,
                 Genres = genres,
@@ -176,6 +196,12 @@ namespace e_shop.Controllers
                 ModelState.AddModelError("", "Failed to edit book");
                 return View(bookVM);
             }
+            var result = await _photoService.AddPhotoAsync(bookVM.FrontPage);
+            if (bookVM.DownloadPdf != null)
+            {
+                string folder = "BooksPdf/";
+                bookVM.DownloadUrl = await UploadFile(folder, bookVM.DownloadPdf);
+            }
             if (bookVM != null)
             {
                 Book newBook = new Book()
@@ -186,7 +212,7 @@ namespace e_shop.Controllers
                     YearPublished = bookVM.YearPublished,
                     NumPages = bookVM.NumPages,
                     Publisher = bookVM.Publisher,
-                    FrontPage = bookVM.FrontPage,
+                    FrontPage = result.Url.ToString(),
                     DownloadUrl = bookVM.DownloadUrl,
                     AuthorId = bookVM.AuthorId,
                 };
@@ -219,6 +245,29 @@ namespace e_shop.Controllers
                 bookVM.Genres = genres;
                 return View(bookVM);
             }
+        }
+        private async Task<string> UploadFile(string folderPath, IFormFile file)
+        {
+            if (folderPath == null)
+            {
+                throw new ArgumentNullException(nameof(folderPath), "Folder path cannot be null.");
+            }
+
+            // Combine folder path and file name
+            string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string filePath = Path.Combine(folderPath, fileName);
+
+            // Get the absolute server path
+            string absoluteServerPath = Path.Combine(_webHostEnvironment.WebRootPath, filePath);
+
+            // Save the file
+            using (var stream = new FileStream(absoluteServerPath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Return the URL relative to the web root
+            return "/" + filePath.Replace("\\", "/");
         }
     }
     

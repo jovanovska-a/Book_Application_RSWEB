@@ -11,9 +11,13 @@ namespace e_shop.Controllers
     public class ReviewsController : Controller
     {
         private readonly IReviewsService _service;
+        private readonly IBooksService bookService;
+        private readonly HttpContextAccessor _httpContextAccessor;
+
         public ReviewsController(IReviewsService service, IBooksService bookService)
         {
             _service = service;
+            this.bookService = bookService;
         }
         public async Task<IActionResult> Index(int id)
         {
@@ -27,21 +31,29 @@ namespace e_shop.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            var currentUser = _service.GetCurrentUserId();
+            var newReview = new Review() { AppUser = currentUser };
+            var newVM = new CreateReviewViewModel()
+            {
+                review = newReview,
+                UserName=_service.GetCurrentUserUsername(currentUser)
+            };
+            return View(newVM); 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(int id,Review review)
+        public IActionResult Create(int id,CreateReviewViewModel reviewVM)
         {
+            
             if (!ModelState.IsValid)
             {
-                return View(review);
+                return View(reviewVM);
             }
             var newReview = new Review
             {
                 BookId = id,
-                AppUser = review.AppUser,
-                Comment = review.Comment,
-                Rating = review.Rating,
+                AppUser = reviewVM.review.AppUser,
+                Comment = reviewVM.review.Comment,
+                Rating = reviewVM.review.Rating,
             };
             _service.Add(newReview);
             return Redirect("/Reviews/Index/"+id);

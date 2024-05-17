@@ -1,0 +1,77 @@
+﻿@using WebApplication1
+@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "My Books";
+}
+@if(Model.Count()==0)
+{
+    <div style="margin: 10%;">
+        <h4 style="color: darkcyan">You don't have any books yet!</h4>
+        <div>
+            <a asp-controller="Books" asp-action="Index" class="btn btn-info" style="font-size: 13px; margin-left: 24%;"><i class="bi bi-book">Go Back</i></a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row" style="background-color: beige;">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-xs-6 border-primary mb-3" style="margin-top: 20px;">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-12" style="background-color: darkcyan;">
+                            <div class="text-white">
+                                <p class="card-text">
+                                    <h6 class="card-title" style="margin: 0; padding-left: 5%; padding-right: 4%; padding-bottom: 2%; padding-top: 2%;">
+                                        <i class="bi bi-bookmark-heart"></i><span> @item.Title</span>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a asp-controller="UserBooks" asp-action="Delete" asp-route-id="@item.Id" style="color: lightcyan"><i class="bi bi-trash"></i></a>
+                                        }
+                                    </h6>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="@item.FrontPage" width="100%" height="260px;" alt="@item.Title" />
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body" style="font-size: 15px;">
+                                <p class="card-text"><b>Author: </b>@item.Author.FirstName @item.Author.LastName</p>
+                                <p class="card-text"><b>Year: </b>@item.YearPublished</p>
+                                <p class="card-text">
+                                    <b>Genres: </b><br>
+                                    @foreach (var genre in item.Books_Genres)
+                                    {
+                                        <span>@genre.Genre.GenreName</span>
+                                        <br />
+                                    }
+                                </p>
+                                @{
+                                    int suma = 0;
+                                    int br = 0;
+                                    int rating = 0;
+                                    @foreach (var r in item.Reviews)
+                                    {
+                                        suma += r.Rating.GetValueOrDefault();
+                                        br++;
+                                    }
+                                    if (br != 0) rating = suma / br;
+                                }
+                                <p class="card-text"><b>Rating: </b>@rating</p>
+                            </div>
+                        </div>
+                        <div class="col-md-30">
+                            <div class="card-footer" style="padding: 4%; background-color: powderblue;">
+                                <p class="card-text">
+                                    <a class="btn btn-success" style="padding-left: 6px; padding-right: 6px; padding-top: 2px; padding-bottom: 2px; margin-right: 25%; margin-left: 1%; font-size: 15px;" asp-controller="Books" asp-action="Details" asp-route-id="@item.Id">Show Details <i class="bi bi-eye"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+}

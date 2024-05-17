@@ -1,4 +1,5 @@
-﻿@using WebApplication1.viewModel
+﻿@using WebApplication1
+@using WebApplication1.viewModel
 @model ReviewsViewModel
 @{
     ViewData["Title"] = "List of Reviews";
@@ -8,10 +9,13 @@
     <div style="margin: 10%;">
         <h4 style="color: darkcyan">This book doesn't have reviews yet!</h4>
         <div>
-            <a asp-controller="Books" asp-action="Index" class="btn btn-info" style="font-size: 13px; margin-left: 25%;"><i class="bi bi-book">Go Back</i></a>
-            <a asp-controller="Reviews" asp-action="Create" asp-route-id="@Model.BookId" class="btn btn-success">
-                <i class="bg-info bi-plus-circle">Add New</i>
-            </a>
+            @if(User.Identity.IsAuthenticated)
+            {
+                <a style="font-size: 13px;" asp-controller="Reviews" asp-action="Create" asp-route-id="@Model.BookId" class="btn btn-success">
+                    <i class="bi bi-plus-circle">Add New</i>
+                </a>
+            }
+            <a asp-controller="Books" asp-action="Index" class="btn btn-info" style="font-size: 13px; margin-left: 24%;"><i class="bi bi-book">Go Back</i></a>
         </div>
     </div>
 }
@@ -32,27 +36,37 @@ else{
                 {
                     <tr>
                         <td class="align-middle" style="font-size: 15px;">
-                            @Html.DisplayFor(modelItem => item.AppUser)
+                            @item.AppUserInfo.UserName
                         </td>
                             <td class="align-middle" style="font-size: 15px;">
                             @Html.DisplayFor(modelItem => item.Comment)
                         </td>
-                            <td class="align-middle" style="font-size: 15px;">
+                        <td class="align-middle" style="font-size: 15px;">
                             @Html.DisplayFor(modelItem => item.Rating)
                         </td>
-                            <td class="align-middle" style="font-size: 15px;">
-                                <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                        <td class="align-middle" style="font-size: 15px;">
+                            @if(User.Identity.IsAuthenticated && User.GetUserId() == item.AppUser)
+                            {
                                 <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                        </td>
+                                    <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            }
+                            @if(User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                            {
+                                    <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            }
+                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-    <div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
-        <a style="font-size: 13px;" asp-controller="Reviews" asp-action="Create" class="btn btn-success">
-            <i class="bi bi-plus-circle">Add New</i>
-        </a>
-    </div>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
+            <a style="font-size: 13px;" asp-controller="Reviews" asp-action="Create" asp-route-id="@Model.BookId" class="btn btn-success">
+                <i class="bi bi-plus-circle">Add New</i>
+            </a>
+        </div>
+    }
 }

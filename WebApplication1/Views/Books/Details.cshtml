@@ -1,41 +1,47 @@
-﻿@model Book
+﻿@using WebApplication1.viewModel
+@model DetailsViewModel
 @{
     ViewData["Title"] = "Details";
 }
 <div class="row text" style="background-color: beige;">
     <div class="col-md-8 offset-2">
         <p>
-            <h3 style ="color: darkcyan;">Details for @Model.Title</h3>
+            <h3 style ="color: darkcyan;">Details for @Model.Book.Title</h3>
         </p>
     </div>
     <div class="row">
-        <div class="col-md-8 offset-2" style="font-size: 14px;">
+        <div class="col-md-8 offset-2" style="font-size: 14px;"> 
                 <div class="form-group text-center">
-                    <img id="FrontPageId" style="max-width: 130px"/>
+                    <img src="@Model.Book.FrontPage" id="FrontPageId" style="max-width: 250px"/>
+                </div>
+                <div class="form-gorup" style=" margin-top: 2%; margin-bottom: 20px;">
+                    <a class="btn btn-secondary" style="font-size: 13px;" asp-controller="Reviews" asp-action="Index" asp-route-id="@Model.Book.Id"><i class="bi bi-chat-square-heart"></i> Reviews</a>
+                    <a class="btn btn-outline-secondary" style="margin-right: 64%; font-size: 13px;" asp-action="Index">Show All</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        <a class="btn btn-outline-success float-right" style="font-size: 13px;" asp-action="Edit" asp-route-id="@Model.Book.Id"><i class="bi bi-pencil-square"></i>Edit</a>
+                    }
                 </div>
                 <div class="form-group">
-                    <label asp-for="FrontPage" class="control-label"></label>
-                    <input asp-for="FrontPage" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
-                    <span asp-validation-for="FrontPage" class="text-danger"></span>
+                    <label asp-for="Book.FrontPage" class="control-label"></label>
+                    <input asp-for="Book.FrontPage" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
+                    <span asp-validation-for="Book.FrontPage" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <label asp-for="Book.Title" class="control-label"></label>
+                <input asp-for="Book.Title" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
+                    <span asp-validation-for="Book.Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                   
+                    <label asp-for="Book.YearPublished" class="control-label"></label>
+                <input asp-for="Book.YearPublished" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
+                    <span asp-validation-for="Book.YearPublished" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="YearPublished" class="control-label"></label>
-                <input asp-for="YearPublished" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
-                    <span asp-validation-for="YearPublished" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    @foreach (var genre in Model.Books_Genres)
+                    @foreach (var genre in Model.Book.Books_Genres)
                     {
                         <label asp-for="@genre.Genre.GenreName" class="control-label"></label>
-                    <input asp-for="@genre.Genre.GenreName" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly />
+                    <input asp-for="@genre.Genre.GenreName" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly />
                         <span asp-validation-for="@genre.Genre.GenreName" class="text-danger"></span>
                     }
                 </div>
@@ -43,7 +49,7 @@
                     int suma = 0;
                     int br = 0;
                     int rating = 0;
-                    @foreach (var r in Model.Reviews)
+                    @foreach (var r in Model.Book.Reviews)
                     {
                         suma += r.Rating.GetValueOrDefault();
                         br++;
@@ -52,42 +58,36 @@
                 }
                 <div class="form-group">
                     <label class="control-label">Rating</label>
-                <input asp-for="@rating" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
+                <input asp-for="@rating" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly disabled />
                     <span asp-validation-for="@rating" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="NumPages" class="control-label"></label>
-                <input asp-for="NumPages" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
-                    <span asp-validation-for="NumPages" class="text-danger"></span>
+                    <label asp-for="Book.NumPages" class="control-label"></label>
+                <input asp-for="Book.NumPages" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly disabled />
+                    <span asp-validation-for="Book.NumPages" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label asp-for="Book.Description" class="control-label"></label>
+                <input asp-for="Book.Description" style="font-size: 13px; background-color: azure; color: darkslategray; " class="form-control" readonly disabled />
+                    <span asp-validation-for="Book.Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <label asp-for="Book.Publisher" class="control-label"></label>
+                    <input asp-for="Book.Publisher" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly disabled />
+                    <span asp-validation-for="Book.Publisher" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Publisher" class="control-label"></label>
-                <input asp-for="Publisher" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
-                    <span asp-validation-for="Publisher" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DownloadUrl" class="control-label"></label>
-                <input asp-for="DownloadUrl" class="form-control" style="font-size: 13px; background-color: azure; color: darkslategray;" readonly" readonly disabled />
-                    <span asp-validation-for="DownloadUrl" class="text-danger"></span>
-                </div>
-            <div class="form-gorup" style=" margin-top: 2%; margin-bottom: 20px;">
-                <a class="btn btn-secondary" style="font-size: 13px;" asp-controller="Reviews" asp-action="Index" asp-route-id="@Model.Id"><i class="bi bi-chat-square-heart"></i> Reviews</a>
-                <a class="btn btn-outline-secondary" style="margin-right: 64%; font-size: 13px;" asp-action="Index">Show All</a>
-                <a class="btn btn-outline-success float-right" style="font-size: 13px;" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil-square"></i>Edit</a>
-            </div>
+                 @if (User.Identity.IsAuthenticated && Model.HasBook)
+                {
+                    @if (Model.Book.DownloadUrl != null) 
+                    {
+                        <div class="form-group">
+                            <label asp-for="Book.DownloadUrl" class="control-label"></label>
+                            <br />
+                            <a style="color: darkslategray;" href="@Model.Book.DownloadUrl" class="text-danger">@Model.Book.DownloadUrl</a>
+                        </div>
+                    }
+                }
         </div>
     </div>
 </div>
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var output = document.getElementById("FrontPageId");
-            output.src = $("#FrontPage").val();
-        })
-    </script>
-}

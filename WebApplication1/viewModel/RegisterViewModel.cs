@@ -10,6 +10,7 @@ namespace WebApplication1.viewModel
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
         [Display(Name ="Confirm Password")]
         [Required(ErrorMessage = "Confirm password is required")]
         [DataType(DataType.Password)]

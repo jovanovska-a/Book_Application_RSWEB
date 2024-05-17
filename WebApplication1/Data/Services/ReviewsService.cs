@@ -1,13 +1,16 @@
 ﻿using e_shop.Models;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1;
 
 namespace e_shop.Data.Services
 {
     public class ReviewsService : IReviewsService
     {
         private readonly AppDbContext _context;
-        public ReviewsService(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ReviewsService(AppDbContext context,IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor=httpContextAccessor;
             _context = context;
         }
         public void Add(Review review)
@@ -25,7 +28,7 @@ namespace e_shop.Data.Services
 
         public async Task<IEnumerable<Review>> GetAllById(int id)
         {
-            var result = await _context.Reviews.Where(b => b.BookId.Equals(id)).ToListAsync();
+            var result = await _context.Reviews.Include(a => a.AppUserInfo).Where(b => b.BookId.Equals(id)).ToListAsync();
             return result;
         }
 
@@ -33,6 +36,15 @@ namespace e_shop.Data.Services
         {
             var result = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
             return result;
+        }
+        public string GetCurrentUserId()
+        {
+            return _httpContextAccessor.HttpContext?.User.GetUserId();
+        }
+        public string GetCurrentUserUsername(string id)
+        {
+            var username = _context.Users.FirstOrDefault(i => i.Id == id).UserName;
+            return username;
         }
 
         public async Task<Review> UpdateAsync(Review review)

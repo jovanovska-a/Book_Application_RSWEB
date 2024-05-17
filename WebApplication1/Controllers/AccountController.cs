@@ -70,6 +70,7 @@ namespace WebApplication1.Controllers
             {
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress
+                
             };
             var newUserResponse=await _userManager.CreateAsync(newUser,registerViewModel.Password);
             if(newUserResponse.Succeeded) 

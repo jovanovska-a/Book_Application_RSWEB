@@ -6,9 +6,12 @@ namespace e_shop.Data.Services
     public class BooksService : IBooksService
     {
         private readonly AppDbContext _context;
-        public BooksService(AppDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BooksService(AppDbContext context,IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+
         }
         public void Add(Book book)
         {
@@ -25,13 +28,13 @@ namespace e_shop.Data.Services
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            var result=await _context.Books.Include(a => a.Author).Include(r => r.Reviews).Include(bg => bg.Books_Genres).ThenInclude(g => g.Genre).ToListAsync();
+            var result=await _context.Books.Include(a => a.Author).Include(r => r.Reviews).Include(u => u.User_Books).Include(bg => bg.Books_Genres).ThenInclude(g => g.Genre).ToListAsync();
             return result;
         }
 
         public async Task<Book> GetByIdAsync(int id)
         {
-            var result = await _context.Books.Include(a => a.Author).Include(r => r.Reviews).Include(bg => bg.Books_Genres).ThenInclude(g => g.Genre).FirstOrDefaultAsync(i => i.Id == id);
+            var result = await _context.Books.Include(a => a.Author).Include(r => r.Reviews).Include(u => u.User_Books).Include(bg => bg.Books_Genres).ThenInclude(g => g.Genre).FirstOrDefaultAsync(i => i.Id == id);
             return result;
         }
 
@@ -72,6 +75,8 @@ namespace e_shop.Data.Services
                 books.Add(book);
             }
             return books;
-        }
+        } 
+
     }
+   
 }

@@ -19,18 +19,24 @@
                         <td class="align-middle" style="font-size: 15px;">
                             @Html.DisplayFor(modelItem => item.GenreName)
                         </td>
-                        <td class="align-middle">
-                            <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            <td class="align-middle">
+                                <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-<div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
-    <a style="font-size: 13px;" asp-controller="Genres" asp-action="Create" class="btn btn-success">
-        <i class="bi bi-plus-circle">Add New</i>
-    </a>
-</div>
+@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    <div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
+        <a style="font-size: 13px;" asp-controller="Genres" asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle">Add New</i>
+        </a>
+    </div>
+}

@@ -14,8 +14,9 @@ namespace WebApplication1.viewModel
         public int ? NumPages { get; set; }
         public string ? Description { get; set; }
         public string ? Publisher { get; set; }
-        public IFormFile FrontPage { get; set; }
+        public IFormFile ? FrontPage { get; set; }
         public string ? DownloadUrl { get; set; }
+        public IFormFile ? DownloadPdf { get; set; }
         //Relations
         [Required(ErrorMessage = "Author is required")]
         public int AuthorId { get; set; }

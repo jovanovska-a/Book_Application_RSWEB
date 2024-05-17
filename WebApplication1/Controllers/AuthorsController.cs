@@ -14,9 +14,14 @@ namespace e_shop.Controllers
             {
                 _service=service;
             }
-            public async Task<IActionResult> Index()
+            public async Task<IActionResult> Index(string searchString)
             {
                 var allAuthors = await _service.GetAll();
+                if (!String.IsNullOrEmpty(searchString))
+                {
+
+                    allAuthors = allAuthors.Where(n => n.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) || n.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
                 return View(allAuthors);
             }
         //Get: Books/Create

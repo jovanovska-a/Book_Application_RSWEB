@@ -5,6 +5,14 @@
 
 <div class="row" style="margin-top: 30px;">
     <div class="col-md-8 offset-md-2">
+        <div style="display: flex;">
+            <form class="form-inline my-lg-0" asp-controller="Authors" asp-action="Index" style="padding: 10px;">
+                <div style="display: flex;">
+                    <input name="searchString" type="text" class="form-control" placeholder="Search Author.." style="font-size: 13px; padding-top: 0px; padding-bottom: 0px; background-color: ivory" />
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search" style="font-size: 13px; padding-top: 0px; margin-top: 3%; padding-bottom: 0px;"></i></button>
+                </div>
+            </form>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -34,18 +42,24 @@
                         <td class="align-middle">
                             @Html.DisplayFor(modelItem => item.Gender)
                         </td>
-                        <td class="align-middle">
-                            <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            <td class="align-middle">
+                                <a class="btn btn-outline-primary" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-danger" style="padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; font-size: 14px;" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-<div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
-    <a style="font-size: 13px;" asp-controller="Authors" asp-action="Create" class="btn btn-success">
-        <i class="bi bi-plus-circle">Add New</i>
-    </a>
-</div>
+@if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+{
+    <div class="text-white" style="position: fixed; right: 30px; bottom: 30px;">
+        <a style="font-size: 13px;" asp-controller="Authors" asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle">Add New</i>
+        </a>
+    </div>
+}

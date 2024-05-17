@@ -1,5 +1,6 @@
 ﻿using e_shop.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace WebApplication1.viewModel
 {
@@ -13,9 +14,10 @@ namespace WebApplication1.viewModel
 
         public string ? Description { get; set; }
         public string ? Publisher { get; set; }
-        //public IFormFile? FrontPage { get; set; }
-        public string? FrontPage{ get; set; }
+        public string ? FrontPageUrl { get; set; }
+        public IFormFile? FrontPage { get; set; }
         public string? DownloadUrl { get; set; }
+        public IFormFile ? DownloadPdf { get; set; }
         public IEnumerable<Author> ? Authors { get; set; }
         public int AuthorId { get; set; }
         public IEnumerable<Genre> ? Genres { get; set; }
