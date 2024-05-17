@@ -3,6 +3,7 @@ using e_shop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Data;
+using WebApplication1.Data.Services;
 using WebApplication1.viewModel;
 
 namespace WebApplication1.Controllers
@@ -12,11 +13,14 @@ namespace WebApplication1.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AppDbContext _context;
-        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,AppDbContext context)
+        private readonly IAccountService _accountService;
+
+        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,AppDbContext context, IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _accountService = accountService;
             
         }
         public IActionResult Login()
@@ -49,6 +53,12 @@ namespace WebApplication1.Controllers
             //User is not found
             TempData["Error"] = "Wrong Credentials.Please try again.";
             return View(loginViewModel);
+        }
+        private void MapUserEdit(AppUser user, EditUserProfileViewModel editVM)
+        {
+            user.Id = editVM.Id;
+            user.UserName = editVM.Username;
+
         }
         public IActionResult Register()
         {
@@ -85,6 +95,51 @@ namespace WebApplication1.Controllers
         {
             await _signInManager.SignOutAsync();
              return RedirectToAction("Index", "Books");
+        }
+        public async Task<IActionResult> EditUserProfile()
+        {
+            var curUserId = _accountService.GetCurrentUserId();
+            var user = await _accountService.GetUserById(curUserId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var editUserProfileVM = new EditUserProfileViewModel()
+            {
+                Id = curUserId,
+                Username = user.UserName,
+            };
+            return View(editUserProfileVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUserProfile(EditUserProfileViewModel editVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit profile");
+                return View("EditUserProfile", editVM);
+            }
+
+            AppUser user = await _accountService.GetUserByIdNoTracking(editVM.Id);
+            if (!await _userManager.CheckPasswordAsync(user, editVM.CurrentPassword))
+            {
+                TempData["Error"] = "Wrong password";
+                return RedirectToAction("EditUserProfile", editVM);
+            }
+
+            if (editVM.NewPassword != null)
+            {
+                var newPass = await _userManager.ChangePasswordAsync(user, editVM.CurrentPassword, editVM.NewPassword);
+                if (!newPass.Succeeded)
+                {
+                    TempData["Error"] = "Failed changing password";
+                    return RedirectToAction("EditUserProfile", editVM);
+                }
+            }
+
+            MapUserEdit(user, editVM);
+            _accountService.Update(user);
+            return RedirectToAction("Index", "Book");
         }
     }
 }
